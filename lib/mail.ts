@@ -42,7 +42,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
 };
 
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const confirmLink = `http://localhost:3000/auth/new-verification?token=${token}`;
+  const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   const emailHtmlEmailVerification = `
   <div class="max-w-md mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow-lg">

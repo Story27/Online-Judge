@@ -1,6 +1,4 @@
 import { UserRole } from "@prisma/client";
-import { FaBullseye } from "react-icons/fa";
-import { PassThrough } from "stream";
 import * as z from "zod";
 
 export const SettingsSchema = z
@@ -67,5 +65,69 @@ export const RegisterSchema = z.object({
   }),
   name: z.string().min(1, {
     message: "Name is required",
+  }),
+});
+
+export const ProblemSetSchema = z.object({
+  problemName: z.string().min(1, {
+    message: "Problem name is required",
+  }),
+  problemId: z.string().min(1, {
+    message: "Problem ID is required",
+  }),
+  description: z.string().min(1, {
+    message: "Description is required",
+  }),
+  tags: z.array(z.string().min(1)).nonempty({
+    message: "At least one tag is required",
+  }),
+  difficulty: z.enum(["Easy", "Medium", "Hard"], {
+    message: "Difficulty level is required",
+  }),
+  exampleTestCases: z
+    .array(
+      z.object({
+        input: z.string().min(1, {
+          message: "Input for example test case is required",
+        }),
+        output: z.string().min(1, {
+          message: "Output for example test case is required",
+        }),
+      })
+    )
+    .nonempty({
+      message: "At least one example test case is required",
+    }),
+  allTestCases: z
+    .array(
+      z.object({
+        input: z.string().min(1, {
+          message: "Input for test case is required",
+        }),
+        output: z.string().min(1, {
+          message: "Output for test case is required",
+        }),
+      })
+    )
+    .nonempty({
+      message: "At least one test case is required",
+    }),
+  userId: z.string().min(1, {
+    message: "User ID is required",
+  }),
+  constraints: z.string().min(1, {
+    message: "Constraints are required",
+  }),
+});
+
+export const CreateSubmissionSchema = z.object({
+  problemId: z.string().min(1, {
+    message: "Problem ID is required",
+  }),
+  code: z.string().min(1, {
+    message: "Code is required",
+  }),
+  language: z.string().min(1, {
+    message: "Language is required",
   }),
 });

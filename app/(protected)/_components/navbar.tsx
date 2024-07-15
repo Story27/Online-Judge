@@ -1,15 +1,20 @@
 "use client";
 
+import { RoleGate } from "@/components/auth/role-gate";
 import { UserButton } from "@/components/auth/user/user-button";
 import { Button } from "@/components/ui/button";
+import { UserRole } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const pathname = usePathname();
   return (
-    <nav className="bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] shadow-sm">
+    <nav className="fixed top-4 flex justify-between items-center p-3 rounded-xl w-full shadow-sm bg-white z-50">
       <div className="flex gap-x-2">
+        <Button asChild variant={pathname === "/" ? "default" : "outline"}>
+          <Link href="/">Home</Link>
+        </Button>
         <Button
           asChild
           variant={pathname === "/server" ? "default" : "outline"}
@@ -22,9 +27,14 @@ export const Navbar = () => {
         >
           <Link href="/client">Client</Link>
         </Button>
-        <Button asChild variant={pathname === "/admin" ? "default" : "outline"}>
-          <Link href="/admin">Admin</Link>
-        </Button>
+        <RoleGate allowedRole={UserRole.ADMIN}>
+          <Button
+            asChild
+            variant={pathname === "/admin" ? "default" : "outline"}
+          >
+            <Link href="/admin">Admin</Link>
+          </Button>
+        </RoleGate>
         <Button
           asChild
           variant={pathname === "/settings" ? "default" : "outline"}

@@ -22,6 +22,7 @@ model User {
   password      String?
   role          UserRole        @default(USER)
   accounts      Account[]
+  problemSets   ProblemSet[]    @relation(name: "UserProblemSets")
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
 }
@@ -79,4 +80,33 @@ model TwoFactorConfirmation{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model ProblemSet {
+  id                  String                 @id @default(cuid())
+  problemName         String
+  problemId           String                 @unique
+  description         String
+  tags                String[]
+  difficulty          Difficulty
+  allTestCases        TestCase[]
+  userId              String
+  constraints         String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserProblemSets")
+}
+
+model TestCase {
+  id                  String                 @id @default(cuid())
+  input               String
+  output              String
+  problemSetId        String
+
+  problemSet ProblemSet @relation(fields: [problemSetId],references:[id], onDelete: Cascade)
+}
+
+enum Difficulty {
+  Easy
+  Medium
+  Hard
 }

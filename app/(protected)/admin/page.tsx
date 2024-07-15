@@ -18,14 +18,16 @@ const AdminPage = () => {
 
       if (data.success) {
         toast.success(data.success);
+        window.location.href = "/createcontest";
       }
     });
   };
-  const onApiRouteClick = async () => {
+  const createProblem = async () => {
     try {
       const response = await fetch("/api/admin");
       if (response.ok) {
         toast.success("Allowed API Route!");
+        window.location.href = "/createproblem";
       } else {
         toast.error("Forbidden API Route!");
       }
@@ -44,12 +46,12 @@ const AdminPage = () => {
           <FormSuccess message="You are allowed to see this content" />
         </RoleGate>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">Admin-only API Route</p>
-          <Button onClick={onApiRouteClick}>Click to test</Button>
+          <p className="text-sm font-medium">Create a new problem</p>
+          <Button onClick={createProblem}>Create</Button>
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">Admin-only Server Action</p>
-          <Button onClick={onServerActionCheck}>Click to test</Button>
+          <p className="text-sm font-medium">Create a new Contest</p>
+          <Button onClick={onServerActionCheck}>Create</Button>
         </div>
       </CardContent>
     </Card>
