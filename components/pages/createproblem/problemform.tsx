@@ -34,7 +34,14 @@ const ProblemCreate: NextPage = (props) => {
     setSuccess("");
     startTransition(() => {
       // Ensure testCases are added to values before submitting
-      const data = { ...values, testCases };
+      values.testCases = testCases.map((testCase) => ({
+        id: "",
+        input: testCase.input,
+        output: testCase.output,
+        problemId: "",
+        isSampleTestCase: testCase.isSample,
+      }));
+      const data = { ...values };
       addProblem(data).then((data) => {
         setError(data.error);
         setSuccess(data.success);

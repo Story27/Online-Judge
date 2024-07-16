@@ -79,7 +79,7 @@ export const TestCaseSchema = z.object({
 export const ProblemSchema = z.object({
   id: z.string().cuid(),
   title: z.string(),
-  description: z.string().nullable().optional(),
+  description: z.string().optional(),
   difficulty: z.nativeEnum(Difficulty),
   topics: z.array(z.string()).default([]),
   userId: z.string(),

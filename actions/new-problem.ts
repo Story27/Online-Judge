@@ -7,20 +7,39 @@ import * as z from "zod";
 import { ProblemSchema } from "@/schemas";
 import { UserRole } from "@prisma/client";
 import { currentUser } from "@/lib/auth";
+import { error } from "console";
 
-export const addProblem = async (values: z.infer<typeof ProblemSchema>) => {
-  const validatedFields = ProblemSchema.safeParse(values);
+interface TestCase {
+  id: string;
+  input: string;
+  output: string;
+  problemId: string;
+  isSampleTestCase: boolean;
+}
+
+interface ProblemData {
+  id: string;
+  title: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  topics: string[];
+  userId: string;
+  testCases: TestCase[];
+  description?: string;
+}
+
+export const addProblem = async (data: ProblemData) => {
+  const validatedFields = ProblemSchema.safeParse(data);
 
   if (!validatedFields.success) {
+    console.error(error);
     return { error: "Invalid Fields!" };
   }
 
-  const { title, difficulty, topics, description, testCases } =
+  const { title, difficulty, topics, description, testCases, userId } =
     validatedFields.data;
-  const currentUserData = await currentUser();
-  const userId = currentUserData?.id ?? undefined;
 
   // Check user role
+  const currentUserData = await currentUser();
   if (currentUserData?.role !== UserRole.ADMIN) {
     return { error: "Forbidden" };
   }
@@ -33,7 +52,7 @@ export const addProblem = async (values: z.infer<typeof ProblemSchema>) => {
         difficulty,
         topics,
         description,
-        userId: userId,
+        userId,
       },
       include: {
         testCases: true,
