@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { UserRole, Difficulty } from "@prisma/client";
 import * as z from "zod";
 
 export const SettingsSchema = z
@@ -68,66 +68,20 @@ export const RegisterSchema = z.object({
   }),
 });
 
-export const ProblemSetSchema = z.object({
-  problemName: z.string().min(1, {
-    message: "Problem name is required",
-  }),
-  problemId: z.string().min(1, {
-    message: "Problem ID is required",
-  }),
-  description: z.string().min(1, {
-    message: "Description is required",
-  }),
-  tags: z.array(z.string().min(1)).nonempty({
-    message: "At least one tag is required",
-  }),
-  difficulty: z.enum(["Easy", "Medium", "Hard"], {
-    message: "Difficulty level is required",
-  }),
-  exampleTestCases: z
-    .array(
-      z.object({
-        input: z.string().min(1, {
-          message: "Input for example test case is required",
-        }),
-        output: z.string().min(1, {
-          message: "Output for example test case is required",
-        }),
-      })
-    )
-    .nonempty({
-      message: "At least one example test case is required",
-    }),
-  allTestCases: z
-    .array(
-      z.object({
-        input: z.string().min(1, {
-          message: "Input for test case is required",
-        }),
-        output: z.string().min(1, {
-          message: "Output for test case is required",
-        }),
-      })
-    )
-    .nonempty({
-      message: "At least one test case is required",
-    }),
-  userId: z.string().min(1, {
-    message: "User ID is required",
-  }),
-  constraints: z.string().min(1, {
-    message: "Constraints are required",
-  }),
+export const TestCaseSchema = z.object({
+  id: z.string().cuid(),
+  input: z.string(),
+  output: z.string(),
+  problemId: z.string(),
+  isSampleTestCase: z.boolean().default(false),
 });
 
-export const CreateSubmissionSchema = z.object({
-  problemId: z.string().min(1, {
-    message: "Problem ID is required",
-  }),
-  code: z.string().min(1, {
-    message: "Code is required",
-  }),
-  language: z.string().min(1, {
-    message: "Language is required",
-  }),
+export const ProblemSchema = z.object({
+  id: z.string().cuid(),
+  title: z.string(),
+  description: z.string().nullable().optional(),
+  difficulty: z.nativeEnum(Difficulty),
+  topics: z.array(z.string()).default([]),
+  userId: z.string(),
+  testCases: z.array(TestCaseSchema).default([]),
 });
