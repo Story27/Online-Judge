@@ -81,11 +81,10 @@ model Problem {
   title         String
   description   String?     @default("")
   difficulty    Difficulty
-  topics        String[]    @default([])
+  topics        String    
   testCases     TestCase[]
   userId        String
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
 }
 
 model TestCase {

@@ -1,46 +1,28 @@
-// new-problem.ts
-
 "use server";
 
 import { db } from "@/lib/db";
 import * as z from "zod";
-import { ProblemSchema } from "@/schemas";
+import { ProblemSchema, ProblemInput } from "@/schemas";
 import { UserRole } from "@prisma/client";
-import { currentUser } from "@/lib/auth";
-import { error } from "console";
 
-interface TestCase {
-  id: string;
-  input: string;
-  output: string;
-  problemId: string;
-  isSampleTestCase: boolean;
-}
-
-interface ProblemData {
-  id: string;
-  title: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  topics: string[];
-  userId: string;
-  testCases: TestCase[];
-  description?: string;
-}
-
-export const addProblem = async (data: ProblemData) => {
-  const validatedFields = ProblemSchema.safeParse(data);
+export const addProblem = async (
+  data: ProblemInput,
+  userId: string,
+  userRole: UserRole
+) => {
+  console.log("Received data:", data);
+  const validatedFields = ProblemSchema.safeParse({ ...data, userId });
 
   if (!validatedFields.success) {
-    console.error(error);
+    console.error("Validation Error:", validatedFields.error);
     return { error: "Invalid Fields!" };
   }
 
-  const { title, difficulty, topics, description, testCases, userId } =
+  const { title, difficulty, topics, description, testCases } =
     validatedFields.data;
 
   // Check user role
-  const currentUserData = await currentUser();
-  if (currentUserData?.role !== UserRole.ADMIN) {
+  if (userRole !== UserRole.ADMIN) {
     return { error: "Forbidden" };
   }
 
@@ -53,23 +35,18 @@ export const addProblem = async (data: ProblemData) => {
         topics,
         description,
         userId,
+        testCases: {
+          create: testCases.map((testCase) => ({
+            input: testCase.input,
+            output: testCase.output,
+            isSampleTestCase: testCase.isSampleTestCase,
+          })),
+        },
       },
       include: {
         testCases: true,
       },
     });
-
-    // If test cases provided, add them
-    if (testCases && testCases.length > 0) {
-      await db.testCase.createMany({
-        data: testCases.map((testCase) => ({
-          problemId: createdProblem.id,
-          input: testCase.input,
-          output: testCase.output,
-          isSampleTestCase: testCase.isSampleTestCase,
-        })),
-      });
-    }
 
     return { success: "Problem created successfully!" };
   } catch (error) {

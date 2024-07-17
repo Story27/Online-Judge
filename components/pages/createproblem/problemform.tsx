@@ -9,6 +9,8 @@ import { ProblemSchema } from "@/schemas";
 import { addProblem } from "@/actions/new-problem";
 import { FormError } from "../../form-error";
 import { FormSuccess } from "../../form-success";
+import { useSession } from "next-auth/react";
+import { UserRole } from "@prisma/client";
 
 interface TestCase {
   input: string;
@@ -17,6 +19,7 @@ interface TestCase {
 }
 
 const ProblemCreate: NextPage = (props) => {
+  const { data: session, status } = useSession({ required: true });
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -29,20 +32,53 @@ const ProblemCreate: NextPage = (props) => {
     { input: "", output: "", isSample: false },
   ]);
 
+  // const onSubmit = async (values: z.infer<typeof ProblemSchema>) => {
+  //   setError("");
+  //   setSuccess("");
+  //   startTransition(() => {
+  //     // Ensure testCases are added to values before submitting
+  //     values.testCases = testCases.map((testCase) => ({
+  //       id: "",
+  //       input: testCase.input,
+  //       output: testCase.output,
+  //       problemId: "",
+  //       isSampleTestCase: testCase.isSample,
+  //     }));
+  //     const data = { ...values };
+  //     console.log(data);
+
+  //     addProblem(data).then((data) => {
+  //       setError(data.error);
+  //       setSuccess(data.success);
+  //     });
+  //   });
+  // };
+
   const onSubmit = async (values: z.infer<typeof ProblemSchema>) => {
     setError("");
     setSuccess("");
+
+    if (status === "loading" || !session?.user) {
+      setError("You must be logged in to create a problem");
+      return;
+    }
+    const { id: userId, role: userRole } = session.user;
+
+    if (!userId || !userRole) {
+      setError("User information is missing");
+      return;
+    }
+
     startTransition(() => {
-      // Ensure testCases are added to values before submitting
-      values.testCases = testCases.map((testCase) => ({
-        id: "",
-        input: testCase.input,
-        output: testCase.output,
-        problemId: "",
-        isSampleTestCase: testCase.isSample,
-      }));
-      const data = { ...values };
-      addProblem(data).then((data) => {
+      const data = {
+        ...values,
+        testCases: testCases.map((testCase) => ({
+          input: testCase.input,
+          output: testCase.output,
+          isSampleTestCase: testCase.isSample,
+        })),
+      };
+      addProblem(data, userId, userRole as UserRole).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });

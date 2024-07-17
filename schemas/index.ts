@@ -69,19 +69,17 @@ export const RegisterSchema = z.object({
 });
 
 export const TestCaseSchema = z.object({
-  id: z.string().cuid(),
   input: z.string(),
   output: z.string(),
-  problemId: z.string(),
   isSampleTestCase: z.boolean().default(false),
 });
 
 export const ProblemSchema = z.object({
-  id: z.string().cuid(),
-  title: z.string(),
+  title: z.string().min(1),
   description: z.string().optional(),
   difficulty: z.nativeEnum(Difficulty),
-  topics: z.array(z.string()).default([]),
-  userId: z.string(),
-  testCases: z.array(TestCaseSchema).default([]),
+  topics: z.string().min(1),
+  testCases: z.array(TestCaseSchema).min(1),
 });
+
+export type ProblemInput = z.infer<typeof ProblemSchema>;
