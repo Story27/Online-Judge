@@ -9,7 +9,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         alt="Background"
         layout="fill"
         objectFit="cover"
-        className="absolute inset-0 -z-10"
+        className="fixed inset-0 -z-10"
+        style={{ backgroundRepeat: "repeat" }}
       />
       {children}
     </div>

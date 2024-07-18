@@ -83,3 +83,12 @@ export const ProblemSchema = z.object({
 });
 
 export type ProblemInput = z.infer<typeof ProblemSchema>;
+
+export const ContestSchema = z.object({
+  name: z.string().min(1, "Contest name is required"),
+  startTime: z.string().min(1, "Start time is required"),
+  endTime: z.string().min(1, "End time is required"),
+  problemIds: z
+    .array(z.string())
+    .min(1, "At least one problem must be selected"),
+});

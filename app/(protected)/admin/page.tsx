@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { UserRole } from "@prisma/client";
 import { toast } from "sonner";
-import { date } from "zod";
 
 const AdminPage = () => {
-  const onServerActionCheck = () => {
+  const createContest = () => {
     admin().then((data) => {
       if (data.error) {
         toast.error(data.error);
@@ -22,14 +21,41 @@ const AdminPage = () => {
       }
     });
   };
+
+  const editProblemHandle = () => {
+    admin().then((data) => {
+      if (data.error) {
+        toast.error(data.error);
+      }
+
+      if (data.success) {
+        toast.success(data.success);
+        window.location.href = "/edit";
+      }
+    });
+  };
+
+  const editContestHandle = () => {
+    admin().then((data) => {
+      if (data.error) {
+        toast.error(data.error);
+      }
+
+      if (data.success) {
+        toast.success(data.success);
+        window.location.href = "/edit";
+      }
+    });
+  };
+
   const createProblem = async () => {
     try {
       const response = await fetch("/api/admin");
       if (response.ok) {
-        toast.success("Allowed API Route!");
+        toast.success("Allowed!");
         window.location.href = "/createproblem";
       } else {
-        toast.error("Forbidden API Route!");
+        toast.error("Forbidden!");
       }
     } catch (error) {
       console.error("Fetch error!", error);
@@ -51,7 +77,15 @@ const AdminPage = () => {
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
           <p className="text-sm font-medium">Create a new Contest</p>
-          <Button onClick={onServerActionCheck}>Create</Button>
+          <Button onClick={createContest}>Create</Button>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
+          <p className="text-sm font-medium">Edit your Problems</p>
+          <Button onClick={editProblemHandle}>Edit</Button>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
+          <p className="text-sm font-medium">Edit your Contests</p>
+          <Button onClick={editContestHandle}>Edit</Button>
         </div>
       </CardContent>
     </Card>

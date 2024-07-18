@@ -18,7 +18,8 @@ export default function Home() {
         alt="Background"
         layout="fill"
         objectFit="cover"
-        className="absolute inset-0 -z-10"
+        className="fixed inset-0 -z-10"
+        style={{ backgroundRepeat: "repeat" }}
       />
       <Navbar />
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center space-y-6">
