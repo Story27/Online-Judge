@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/pages/navbar/navbar";
 import Image from "next/image";
 import bg from "../public/bg.jpg";
+import Link from "next/link";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -35,11 +36,8 @@ export default function Home() {
           Test your coding skills against challenging problems.
         </p>
         <div className="space-y-4">
-          <Button variant="default" size="lg">
-            Get Started
-          </Button>
-          <Button variant="outline" size="lg">
-            Learn More
+          <Button variant="default" size="lg" asChild>
+            <Link href="/problems">Get Started</Link>
           </Button>
         </div>
       </div>

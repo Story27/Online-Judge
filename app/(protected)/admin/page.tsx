@@ -22,20 +22,7 @@ const AdminPage = () => {
     });
   };
 
-  const editProblemHandle = () => {
-    admin().then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      }
-
-      if (data.success) {
-        toast.success(data.success);
-        window.location.href = "/edit";
-      }
-    });
-  };
-
-  const editContestHandle = () => {
+  const editHandle = () => {
     admin().then((data) => {
       if (data.error) {
         toast.error(data.error);
@@ -80,12 +67,8 @@ const AdminPage = () => {
           <Button onClick={createContest}>Create</Button>
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">Edit your Problems</p>
-          <Button onClick={editProblemHandle}>Edit</Button>
-        </div>
-        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">Edit your Contests</p>
-          <Button onClick={editContestHandle}>Edit</Button>
+          <p className="text-sm font-medium">Edit your Problems & Contests</p>
+          <Button onClick={editHandle}>Edit</Button>
         </div>
       </CardContent>
     </Card>
