@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { runCode } from "@/actions/run";
 
 interface TestCase {
   id: string;
@@ -44,9 +45,35 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   const [error, setError] = useState<string | undefined>("");
   const [selectedTab, setSelectedTab] = useState("input");
   const [code, setCode] = useState<string>("");
+  const [input, setInput] = useState<string>("");
+  const [output, setOutput] = useState<string>("");
+  const [language, setLanguage] = useState<string>("cpp");
 
   const onLanguageChange = (value: string) => {
+    setLanguage(value);
     console.log("Selected language:", value);
+  };
+
+  const handleSubmit = async () => {
+    const payload = {
+      language:
+        language === "cpp" ? "cpp" : language === "java" ? "java" : "py",
+      code,
+      input,
+    };
+
+    console.log("Payload: ", payload);
+
+    try {
+      const output = await runCode(
+        payload.language,
+        payload.code,
+        payload.input
+      );
+      setOutput(output);
+    } catch (error) {
+      console.error("Error submitting code:", error);
+    }
   };
 
   useEffect(() => {
@@ -76,11 +103,11 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
       <div className="h-screen bg-black text-white py-5">
         <Navbar />
         <div className="p-4">
-          <Skeleton className="h-8 w-3/4 mb-4" />
-          <Skeleton className="h-6 w-1/2 mb-4" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-10 w-3/4 mb-4 bg-gray-800" />
+          <Skeleton className="h-8 w-1/2 mb-4 bg-gray-800" />
+          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
+          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
+          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
         </div>
       </div>
     );
@@ -154,7 +181,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="python">Python</SelectItem>
+                    <SelectItem value="py">Python</SelectItem>
                     <SelectItem value="java">Java</SelectItem>
                     <SelectItem value="cpp">C++</SelectItem>
                   </SelectContent>
@@ -168,8 +195,22 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               />
             </div>
             <div className="flex space-x-4 p-4">
-              <Button onClick={() => setSelectedTab("output")}>Run</Button>
-              <Button onClick={() => setSelectedTab("verdict")}>Submit</Button>
+              <Button
+                onClick={() => {
+                  setSelectedTab("output");
+                  handleSubmit();
+                }}
+              >
+                Run
+              </Button>
+              <Button
+                onClick={() => {
+                  setSelectedTab("verdict");
+                  handleSubmit();
+                }}
+              >
+                Submit
+              </Button>
             </div>
             <Tabs
               defaultValue="input"
@@ -186,12 +227,16 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                 <Textarea
                   placeholder="Input"
                   className="h-40 bg-gray-800 text-white"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                 />
               </TabsContent>
               <TabsContent value="output">
                 <Textarea
                   placeholder="Output"
                   className="h-40 bg-gray-800 text-white"
+                  value={output}
+                  readOnly
                 />
               </TabsContent>
               <TabsContent value="verdict">
@@ -199,6 +244,8 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                   placeholder="Verdict"
                   className="h-40 bg-gray-800 text-white"
                   disabled
+                  value={output}
+                  readOnly
                 />
               </TabsContent>
             </Tabs>

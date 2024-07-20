@@ -106,7 +106,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, userId, userRole, contestId }), // Include contestId if provided
+        body: JSON.stringify({ ...data, userId, userRole }),
       });
 
       if (!response.ok) {
