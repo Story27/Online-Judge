@@ -4,7 +4,7 @@ import { exec } from "child_process";
 import path from "path";
 import fs from "fs";
 
-const outputPath = path.join(process.cwd(), "outputs");
+const outputPath = path.join(process.cwd(), "Executed-codes", "outputs");
 
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
@@ -16,12 +16,14 @@ export async function executeCpp(filePath: string, inputPath: string) {
 
   return new Promise<string>((resolve, reject) => {
     exec(
-      `g++ ${filePath} -o ${outPath} && cd ${outputPath} && ./${jobId}.exe < ${inputPath}`,
+      `g++ ${filePath} -o ${outPath} && ${outPath} < ${inputPath}`,
       (error, stdout, stderr) => {
         if (error) {
-          reject({ error, stderr });
+          console.error("Execution error:", error);
+          reject(`Execution error: ${error.message}`);
         } else if (stderr) {
-          reject(stderr);
+          console.error("Stderr:", stderr);
+          reject(`Stderr: ${stderr}`);
         } else {
           resolve(stdout);
         }

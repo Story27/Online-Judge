@@ -48,6 +48,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string>("");
   const [language, setLanguage] = useState<string>("cpp");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const onLanguageChange = (value: string) => {
     setLanguage(value);
@@ -55,6 +56,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   };
 
   const handleSubmit = async () => {
+    setIsProcessing(true);
     const payload = {
       language:
         language === "cpp" ? "cpp" : language === "java" ? "java" : "py",
@@ -73,6 +75,8 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
       setOutput(output);
     } catch (error) {
       console.error("Error submitting code:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -176,7 +180,10 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
             <div className="flex flex-col space-y-4">
               <div className="flex flex-col space-y-1.5 w-fit">
                 <Label htmlFor="language">Language</Label>
-                <Select onValueChange={(value) => onLanguageChange(value)}>
+                <Select
+                  onValueChange={(value) => onLanguageChange(value)}
+                  disabled={isProcessing}
+                >
                   <SelectTrigger id="language">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -192,6 +199,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                 className="h-80 bg-gray-800 text-white"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
+                disabled={isProcessing}
               />
             </div>
             <div className="flex space-x-4 p-4">
@@ -200,6 +208,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                   setSelectedTab("output");
                   handleSubmit();
                 }}
+                disabled={isProcessing}
               >
                 Run
               </Button>
@@ -208,6 +217,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                   setSelectedTab("verdict");
                   handleSubmit();
                 }}
+                disabled={isProcessing}
               >
                 Submit
               </Button>
@@ -229,6 +239,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                   className="h-40 bg-gray-800 text-white"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  disabled={isProcessing}
                 />
               </TabsContent>
               <TabsContent value="output">
