@@ -48,7 +48,7 @@ export type Problem = {
   acceptance: string;
 };
 
-export const columns: ColumnDef<Problem>[] = [
+const columns: ColumnDef<Problem>[] = [
   {
     accessorKey: "title",
     header: "Title",

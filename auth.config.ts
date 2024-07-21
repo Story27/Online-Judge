@@ -6,6 +6,8 @@ import Google from "next-auth/providers/google";
 import { LoginSchema } from "./schemas";
 import { getUserByEmail } from "./data/user";
 
+const trustedHosts = process.env.TRUSTED_HOSTS?.split(",") || [];
+
 export default {
   providers: [
     Google({
@@ -32,4 +34,5 @@ export default {
       },
     }),
   ],
+  trustHost: true,
 } satisfies NextAuthConfig;

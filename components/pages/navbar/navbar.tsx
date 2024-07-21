@@ -21,8 +21,8 @@ const Navbar = () => {
         <a href="/problems" className="text-white pr-8 ">
           Problems
         </a>
-        <a href="/teams" className="text-white pr-8">
-          Teams
+        <a href="/contests" className="text-white pr-8">
+          Contests
         </a>
 
         {user ? (

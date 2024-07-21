@@ -15,7 +15,7 @@ interface Problem {
   title: string;
 }
 
-const ContestCreate: NextPage = (props) => {
+const ContestCreate: NextPage = () => {
   const { data: session, status } = useSession({ required: true });
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState<string | undefined>("");
