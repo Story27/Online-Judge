@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { runCode } from "@/actions/run";
+import Editor from "@monaco-editor/react";
 
 interface TestCase {
   id: string;
@@ -47,6 +48,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   const [code, setCode] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string>("");
+  const [verdict, setVerdict] = useState<string>("");
   const [language, setLanguage] = useState<string>("cpp");
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
@@ -55,26 +57,87 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
     console.log("Selected language:", value);
   };
 
-  const handleSubmit = async () => {
+  const handleRun = async () => {
+    if (input === "") {
+      setOutput("Please enter an input");
+      return;
+    }
+    setOutput("");
+    setVerdict("");
     setIsProcessing(true);
+
     const payload = {
       language:
-        language === "cpp" ? "cpp" : language === "java" ? "java" : "py",
+        language === "cpp" ? "cpp" : language === "java" ? "java" : "python",
       code,
       input,
     };
 
-    console.log("Payload: ", payload);
-
     try {
-      const output = await runCode(
+      const result = await runCode(
         payload.language,
         payload.code,
         payload.input
       );
-      setOutput(output);
+      setOutput(result);
     } catch (error) {
-      console.error("Error submitting code:", error);
+      console.error("Error running code:", error);
+      setOutput("An error occurred while processing your code.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setOutput("");
+    setVerdict("");
+    setIsProcessing(true);
+
+    try {
+      const response = await fetch(`/api/problems/${problemId}`);
+      if (!response.ok) throw new Error("Failed to fetch problem data");
+      const data = await response.json();
+      const testCases = data.testCases;
+
+      let allTestsPassed = true;
+      for (let i = 0; i < testCases.length; i++) {
+        const testCase = testCases[i];
+        const payload = {
+          language:
+            language === "cpp"
+              ? "cpp"
+              : language === "java"
+              ? "java"
+              : "python",
+          code,
+          input: testCase.input,
+        };
+
+        try {
+          const result = await runCode(
+            payload.language,
+            payload.code,
+            payload.input
+          );
+          if (result.trim() !== testCase.output.trim()) {
+            allTestsPassed = false;
+            setVerdict(`Failed on Test Case ${i + 1}`);
+            break;
+          }
+        } catch (error) {
+          console.error("Error submitting code:", error);
+          setVerdict("An error occurred while processing your code.");
+          setIsProcessing(false);
+          return;
+        }
+      }
+
+      if (allTestsPassed) {
+        setVerdict("Accepted");
+      }
+    } catch (error) {
+      console.error("Error fetching problem data:", error);
+      setVerdict("Failed to load problem data. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -188,25 +251,33 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="py">Python</SelectItem>
+                    <SelectItem value="python">Python</SelectItem>
                     <SelectItem value="java">Java</SelectItem>
                     <SelectItem value="cpp">C++</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <Textarea
-                placeholder="Write your code here..."
-                className="h-80 bg-gray-800 text-white"
+              <Editor
+                height="400px"
+                defaultLanguage={language}
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
-                disabled={isProcessing}
+                onChange={(value) => setCode(value || "")}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineNumbers: "on",
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  readOnly: isProcessing,
+                }}
               />
             </div>
             <div className="flex space-x-4 p-4">
               <Button
                 onClick={() => {
                   setSelectedTab("output");
-                  handleSubmit();
+                  handleRun();
                 }}
                 disabled={isProcessing}
               >
@@ -255,7 +326,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                   placeholder="Verdict"
                   className="h-40 bg-gray-800 text-white"
                   disabled
-                  value={output}
+                  value={verdict}
                   readOnly
                 />
               </TabsContent>
