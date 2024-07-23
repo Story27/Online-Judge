@@ -278,7 +278,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                       disabled={isPending}
                       type="text"
                       {...register("title", { required: true })}
-                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm ${
                         errors.title ? "border-red-500" : ""
                       }`}
                     />
@@ -295,7 +295,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                     <select
                       disabled={isPending}
                       {...register("difficulty", { required: true })}
-                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm ${
                         errors.difficulty ? "border-red-500" : ""
                       }`}
                     >
@@ -321,7 +321,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                       disabled={isPending}
                       type="text"
                       {...register("topics", { required: true })}
-                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm ${
                         errors.topics ? "border-red-500" : ""
                       }`}
                     />
@@ -338,7 +338,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                     <textarea
                       disabled={isPending}
                       {...register("description")}
-                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                      className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm ${
                         errors.description ? "border-red-500" : ""
                       }`}
                     />
@@ -369,7 +369,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                               onChange={(event) =>
                                 handleInputChange(index, event)
                               }
-                              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                             />
                           </div>
                           <div>
@@ -384,7 +384,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                               onChange={(event) =>
                                 handleInputChange(index, event)
                               }
-                              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                             />
                           </div>
                         </div>
@@ -401,7 +401,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
                               onChange={(event) =>
                                 handleCheckboxChange(index, event)
                               }
-                              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                              className="form-checkbox h-4 w-4 text-black transition duration-150 ease-in-out"
                             />
                           </div>
                           <button
@@ -514,7 +514,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
             <FormSuccess message={success} />
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 text-white bg-black rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
             >
               {problemId ? "Update Problem" : "Update Contest"}
             </button>

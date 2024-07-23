@@ -24,6 +24,7 @@ const ContestCreate: NextPage = (props) => {
   const [isPending, startTransition] = useTransition();
   const [problems, setProblems] = useState<Problem[]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     handleSubmit,
@@ -36,6 +37,7 @@ const ContestCreate: NextPage = (props) => {
       const response = await fetch("/api/problems");
       const data = await response.json();
       setProblems(data);
+      setIsLoading(false);
     };
 
     fetchProblems();
@@ -151,28 +153,31 @@ const ContestCreate: NextPage = (props) => {
             className="w-full px-3 py-1 mb-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           <div className="max-h-48 overflow-y-auto pr-2">
-            {filteredProblems.map((problem) => (
-              <div key={problem.id} className="flex items-center mb-1">
-                <input
-                  type="checkbox"
-                  id={problem.id}
-                  checked={selectedProblems.includes(problem.id)}
-                  onChange={() => handleProblemSelect(problem.id)}
-                  className="mr-2"
-                />
-                <label htmlFor={problem.id} className="text-sm">
-                  {problem.title}
-                </label>
-              </div>
-            ))}
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              filteredProblems.map((problem) => (
+                <div key={problem.id} className="flex items-center mb-1">
+                  <input
+                    type="checkbox"
+                    id={problem.id}
+                    checked={selectedProblems.includes(problem.id)}
+                    onChange={() => handleProblemSelect(problem.id)}
+                    className="mr-2"
+                  />
+                  <label htmlFor={problem.id} className="text-sm">
+                    {problem.title}
+                  </label>
+                </div>
+              ))
+            )}
           </div>
         </div>
         <FormError message={error} />
         <FormSuccess message={success} />
         <Button
-          variant={"default"}
           type="submit"
-          className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
         >
           Create Contest
         </Button>
