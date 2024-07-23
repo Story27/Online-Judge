@@ -7,6 +7,7 @@ import { LoginSchema } from "./schemas";
 import { getUserByEmail } from "./data/user";
 
 const trustedHosts = process.env.TRUSTED_HOSTS?.split(",") || [];
+trustedHosts.push("online-judge-lovat-delta.vercel.app");
 
 export default {
   providers: [
@@ -34,5 +35,5 @@ export default {
       },
     }),
   ],
-  trustHost: true,
+  trustHost: trustedHosts.includes(process.env.NEXT_PUBLIC_URL || ""),
 } satisfies NextAuthConfig;
