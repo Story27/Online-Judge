@@ -6,9 +6,6 @@ import Google from "next-auth/providers/google";
 import { LoginSchema } from "./schemas";
 import { getUserByEmail } from "./data/user";
 
-const trustedHosts = process.env.TRUSTED_HOSTS?.split(",") || [];
-trustedHosts.push("online-judge-35n4f1eti-story27s-projects.vercel.app");
-
 export default {
   providers: [
     Google({
@@ -35,5 +32,5 @@ export default {
       },
     }),
   ],
-  trustHost: trustedHosts.includes(process.env.NEXTAUTH_URL || ""),
+  trustHost: true,
 } satisfies NextAuthConfig;

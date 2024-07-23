@@ -246,9 +246,10 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                 <Select
                   onValueChange={(value) => onLanguageChange(value)}
                   disabled={isProcessing}
+                  defaultValue="cpp"
                 >
                   <SelectTrigger id="language">
-                    <SelectValue placeholder="Select" />
+                    <SelectValue placeholder="C++" />
                   </SelectTrigger>
                   <SelectContent position="popper">
                     <SelectItem value="python">Python</SelectItem>
@@ -260,7 +261,16 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               <Editor
                 height="400px"
                 defaultLanguage={language}
-                value={code}
+                value={
+                  code ||
+                  (language === "cpp"
+                    ? "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}"
+                    : language === "python"
+                    ? "# Write your python code here\n"
+                    : language === "java"
+                    ? "public class Main {\n    public static void main(String[] args) {\n        // your code here\n    }\n}"
+                    : "")
+                }
                 onChange={(value) => setCode(value || "")}
                 theme="vs-dark"
                 options={{
