@@ -5,3 +5,5 @@ Executed-Codes
 Dockerfile
 .dockerignore
 README.md
+npm-debug.log
+.git
