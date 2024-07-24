@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { SettingsSchema } from "@/schemas";
 import { getUserByEmail, getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";
