@@ -94,7 +94,7 @@ const columns: ColumnDef<Contest>[] = [
   },
 ];
 
-export default function ContestPage({ contestId } : { contestId: string }) {
+export default function ContestPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
