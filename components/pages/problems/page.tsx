@@ -24,6 +24,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { runCode } from "@/actions/run";
 import Editor from "@monaco-editor/react";
+import { updateAcceptances } from "@/actions/acceptance";
 
 interface TestCase {
   id: string;
@@ -134,6 +135,13 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
 
       if (allTestsPassed) {
         setVerdict("Accepted");
+        updateAcceptances(problemId)
+          .then(() => {
+            console.log("Acceptance updated successfully");
+          })
+          .catch((error) => {
+            console.error("Error updating acceptances:", error);
+          });
       }
     } catch (error) {
       console.error("Error fetching problem data:", error);
@@ -170,11 +178,11 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
       <div className="h-screen bg-black text-white py-5">
         <Navbar />
         <div className="p-4">
-          <Skeleton className="h-10 w-3/4 mb-4 bg-gray-800" />
-          <Skeleton className="h-8 w-1/2 mb-4 bg-gray-800" />
-          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
-          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
-          <Skeleton className="h-6 w-full mb-2 bg-gray-800" />
+          <Skeleton className="h-10 w-3/4 mb-4 bg-[#1F1E1F]" />
+          <Skeleton className="h-8 w-1/2 mb-4 bg-[#1F1E1F]" />
+          <Skeleton className="h-6 w-full mb-2 bg-[#1F1E1F]" />
+          <Skeleton className="h-6 w-full mb-2 bg-[#1F1E1F]" />
+          <Skeleton className="h-6 w-full mb-2 bg-[#1F1E1F]" />
         </div>
       </div>
     );
@@ -186,7 +194,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel defaultSize={50} className="p-4 text-white">
           <ScrollArea className="h-full">
-            <Card className="w-full max-w-4xl shadow-md h-full overflow-auto scrollbar-hide bg-gray-800">
+            <Card className="w-full max-w-4xl shadow-md h-full overflow-auto scrollbar-hide bg-[#1F1E1F]">
               <CardHeader>
                 <h2 className="text-2xl font-bold text-white">
                   {problem.title}
@@ -220,12 +228,12 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                     .filter((tc) => tc.isSampleTestCase)
                     .map((testCase) => (
                       <div key={testCase.id} className="mb-4">
-                        <p className="bg-slate-700 border border-gray-700 rounded-md p-2 my-4">
+                        <p className="bg-[#383638] border border-gray-700 rounded-md p-2 my-4">
                           <strong>Input:</strong>
                           <br />
                           {testCase.input}
                         </p>
-                        <p className="bg-slate-700 border border-gray-700 rounded-md p-2 my-4">
+                        <p className="bg-[#383638] border border-gray-700 rounded-md p-2 my-4">
                           <strong>Output:</strong>
                           <br />
                           {testCase.output}
@@ -285,6 +293,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
             </div>
             <div className="flex space-x-4 p-4">
               <Button
+                className="bg-white text-black hover:bg-black hover:text-white"
                 onClick={() => {
                   setSelectedTab("output");
                   handleRun();
@@ -294,6 +303,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
                 Run
               </Button>
               <Button
+                className="bg-white text-black hover:bg-black hover:text-white"
                 onClick={() => {
                   setSelectedTab("verdict");
                   handleSubmit();
@@ -309,7 +319,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               onValueChange={setSelectedTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-3 ">
+              <TabsList className="grid w-full grid-cols-3 bg-[#27262B]">
                 <TabsTrigger value="input">Input</TabsTrigger>
                 <TabsTrigger value="output">Output</TabsTrigger>
                 <TabsTrigger value="verdict">Verdict</TabsTrigger>
@@ -317,7 +327,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               <TabsContent value="input">
                 <Textarea
                   placeholder="Input"
-                  className="h-40 bg-gray-800 text-white"
+                  className="h-40 bg-black text-white"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   disabled={isProcessing}
@@ -326,7 +336,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               <TabsContent value="output">
                 <Textarea
                   placeholder="Output"
-                  className="h-40 bg-gray-800 text-white"
+                  className="h-40 bg-[#1F1E1F] text-white"
                   value={output}
                   readOnly
                 />
@@ -334,7 +344,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
               <TabsContent value="verdict">
                 <Textarea
                   placeholder="Verdict"
-                  className="h-40 bg-gray-800 text-white"
+                  className="h-40 bg-[#1F1E1F] text-white"
                   disabled
                   value={verdict}
                   readOnly

@@ -1,7 +1,6 @@
 "use server";
 
-import db from "@/lib/db";
-import * as z from "zod";
+import { db } from "@/lib/db";
 import { ProblemSchema, ProblemInput } from "@/schemas";
 import { UserRole } from "@prisma/client";
 

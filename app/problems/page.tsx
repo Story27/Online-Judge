@@ -40,12 +40,18 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Navbar from "@/components/pages/navbar/navbar";
+import { CheckIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export type Problem = {
   id: string;
   title: string;
   difficulty: string;
-  acceptance: string;
+  acceptances: string[];
+  description: string;
+  testCases: { id: string; input: string; output: string }[];
+  topics: string;
+  userId: string;
 };
 
 const columns: ColumnDef<Problem>[] = [
@@ -60,6 +66,21 @@ const columns: ColumnDef<Problem>[] = [
   {
     accessorKey: "acceptance",
     header: "Acceptance",
+    cell: ({ row }) => {
+      const user = useCurrentUser();
+      const userEmail = user?.email || undefined;
+      const acceptances = row.original.acceptances ?? [];
+
+      const isAccepted =
+        userEmail &&
+        acceptances.some(
+          (acceptance) => acceptance.toLowerCase() === userEmail.toLowerCase()
+        );
+
+      return isAccepted ? (
+        <CheckIcon className="h-5 w-5 text-green-500" />
+      ) : null;
+    },
   },
 ];
 

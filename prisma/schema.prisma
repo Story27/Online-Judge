@@ -97,6 +97,7 @@ model Problem {
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   contests    Contest[]
+  acceptances String[] @default([])
 }
 
 model TestCase {
