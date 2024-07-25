@@ -41,7 +41,7 @@ import {
 } from "@/components/ui/pagination";
 import Navbar from "@/components/pages/navbar/navbar";
 import { CheckIcon, Cross1Icon } from "@radix-ui/react-icons";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { UseCurrentUser } from "@/hooks/use-current-user";
 
 export type Problem = {
   id: string;
@@ -67,7 +67,7 @@ const columns: ColumnDef<Problem>[] = [
     accessorKey: "acceptance",
     header: "Acceptance",
     cell: ({ row }) => {
-      const user = useCurrentUser();
+      const user = UseCurrentUser();
       const userEmail = user?.email || undefined;
       const acceptances = row.original.acceptances ?? [];
 

@@ -3,11 +3,11 @@
 import { LoginButton } from "@/components/auth/login/login-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { UseCurrentUser } from "@/hooks/use-current-user";
 import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
-  const user = useCurrentUser();
+  const user = UseCurrentUser();
 
   return (
     <nav className="flex justify-between items-center px-8 shadow-md bg-black">

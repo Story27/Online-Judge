@@ -12,11 +12,11 @@ import {
 } from "../../ui/dropdown-menu";
 
 import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { UseCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "../logout/logout-button";
 
 export const UserButton = () => {
-  const user = useCurrentUser();
+  const user = UseCurrentUser();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
