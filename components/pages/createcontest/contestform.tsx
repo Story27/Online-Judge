@@ -34,7 +34,7 @@ const ContestCreate: NextPage = (props) => {
 
   useEffect(() => {
     const fetchProblems = async () => {
-      const response = await fetch("/api/problems");
+      const response = await fetch("/api/problems", { cache: "no-store" });
       const data = await response.json();
       setProblems(data);
       setIsLoading(false);

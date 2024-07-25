@@ -95,7 +95,9 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
     setIsProcessing(true);
 
     try {
-      const response = await fetch(`/api/problems/${problemId}`);
+      const response = await fetch(`/api/problems/${problemId}`, {
+        cache: "no-store",
+      });
       if (!response.ok) throw new Error("Failed to fetch problem data");
       const data = await response.json();
       const testCases = data.testCases;
@@ -154,7 +156,9 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const response = await fetch(`/api/problems/${problemId}`);
+        const response = await fetch(`/api/problems/${problemId}`, {
+          cache: "no-store",
+        });
         if (!response.ok) throw new Error("Failed to fetch problem data");
         const data = await response.json();
         setProblem(data);

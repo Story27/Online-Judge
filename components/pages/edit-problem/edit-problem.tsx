@@ -56,9 +56,13 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
       try {
         let response;
         if (problemId) {
-          response = await fetch(`/api/problems/${problemId}`);
+          response = await fetch(`/api/problems/${problemId}`, {
+            cache: "no-store",
+          });
         } else if (contestId) {
-          response = await fetch(`/api/contests/${contestId}`);
+          response = await fetch(`/api/contests/${contestId}`, {
+            cache: "no-store",
+          });
         } else {
           throw new Error("Either problemId or contestId must be provided");
         }
@@ -102,6 +106,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
   ) => {
     try {
       const response = await fetch(`/api/problems/${problemId}`, {
+        cache: "no-store",
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -132,6 +137,7 @@ const ProblemEdit: React.FC<ProblemEditProps> = ({ problemId, contestId }) => {
   ) => {
     try {
       const response = await fetch(`/api/contests/${contestId}`, {
+        cache: "no-store",
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

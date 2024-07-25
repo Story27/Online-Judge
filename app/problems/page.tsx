@@ -95,7 +95,7 @@ export default function ProblemsPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/problems");
+      const response = await fetch("/api/problems", { cache: "no-store" });
       const result = await response.json();
       setData(result);
       setLoading(false);

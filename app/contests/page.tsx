@@ -94,7 +94,7 @@ const columns: ColumnDef<Contest>[] = [
   },
 ];
 
-export default function ContestPage() {
+export default function ContestPage({ contestId } : { contestId: string }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -107,7 +107,7 @@ export default function ContestPage() {
   useEffect(() => {
     const fetchContests = async () => {
       try {
-        const response = await fetch(`/api/contests`);
+        const response = await fetch(`/api/contests`, { cache: "no-store" });
         if (!response.ok) throw new Error("Failed to fetch contest data");
         const data = await response.json();
         setData(data);

@@ -33,7 +33,7 @@ const EditPage = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await fetch("/api/problems");
+        const response = await fetch("/api/problems", { cache: "no-store" });
         if (response.status === 403) {
           toast.error(
             "Forbidden: You do not have permission to access this resource."
@@ -52,7 +52,7 @@ const EditPage = () => {
 
     const fetchContests = async () => {
       try {
-        const response = await fetch("/api/contests");
+        const response = await fetch("/api/contests", { cache: "no-store" });
         if (response.status === 403) {
           toast.error(
             "Forbidden: You do not have permission to access this resource."
