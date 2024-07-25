@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -27,10 +27,10 @@ interface Contest {
 
 const EditPage = () => {
   const { data: session, status } = useSession({ required: true });
-  const [problems, setProblems] = React.useState<Problem[]>([]);
-  const [contests, setContests] = React.useState<Contest[]>([]);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [contests, setContests] = useState<Contest[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchProblems = async () => {
       try {
         const response = await fetch("/api/problems");

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   SortingState,
@@ -85,18 +85,15 @@ const columns: ColumnDef<Problem>[] = [
 ];
 
 export default function ProblemsPage() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = React.useState<Problem[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       const response = await fetch("/api/problems");
       const result = await response.json();
