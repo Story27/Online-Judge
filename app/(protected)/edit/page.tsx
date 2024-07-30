@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { deleteProblem } from "@/actions/delete-problem";
+import { deleteContest } from "@/actions/delete-contest"; 
 
 interface Problem {
   id: string;
@@ -75,13 +77,35 @@ const EditPage = () => {
     }
   }, [status, session]);
 
+  const handleDeleteProblem = async (problemId: string) => {
+    try {
+      await deleteProblem(problemId);
+      setProblems(problems.filter((problem) => problem.id !== problemId));
+      toast.success("Problem deleted successfully");
+    } catch (error) {
+      console.error("Error deleting problem:", error);
+      toast.error("Error deleting problem");
+    }
+  };
+
+  const handleDeleteContest = async (contestId: string) => {
+    try {
+      await deleteContest(contestId);
+      setContests(contests.filter((contest) => contest.id !== contestId));
+      toast.success("Contest deleted successfully");
+    } catch (error) {
+      console.error("Error deleting contest:", error);
+      toast.error("Error deleting contest");
+    }
+  };
+
   return (
     <div className="flex space-x-4">
       <Card className="w-[600px]">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">Problem List</p>
         </CardHeader>
-        <CardContent className="space-y-4 overflow-auto">
+        <CardContent className="space-y-4 overflow-auto max-h-[400px]">
           {problems.length === 0 ? (
             <p className="text-center">You have no problems to edit</p>
           ) : (
@@ -92,9 +116,17 @@ const EditPage = () => {
                   className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md"
                 >
                   <p className="text-sm font-medium">{problem.title}</p>
-                  <Button asChild>
-                    <Link href={`/problems/edit/${problem.id}`}>Edit</Link>
-                  </Button>
+                  <div className="flex space-x-2 ml-4">
+                    <Button asChild>
+                      <Link href={`/problems/edit/${problem.id}`}>Edit</Link>
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => handleDeleteProblem(problem.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -105,7 +137,7 @@ const EditPage = () => {
         <CardHeader>
           <p className="text-2xl font-semibold text-center">Contest List</p>
         </CardHeader>
-        <CardContent className="space-y-4 overflow-auto">
+        <CardContent className="space-y-4 overflow-auto max-h-[400px]">
           {contests.length === 0 ? (
             <p className="text-center">You have no contests to edit</p>
           ) : (
@@ -116,9 +148,17 @@ const EditPage = () => {
                   className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md"
                 >
                   <p className="text-sm font-medium">{contest.name}</p>
-                  <Button asChild>
-                    <Link href={`/contests/edit/${contest.id}`}>Edit</Link>
-                  </Button>
+                  <div className="flex space-x-2 ml-4">
+                    <Button asChild>
+                      <Link href={`/contests/edit/${contest.id}`}>Edit</Link>
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => handleDeleteContest(contest.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </li>
               ))}
             </ul>

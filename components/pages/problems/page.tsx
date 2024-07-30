@@ -55,7 +55,6 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
 
   const onLanguageChange = (value: string) => {
     setLanguage(value);
-    console.log("Selected language:", value);
   };
 
   const handleRun = async () => {
@@ -193,7 +192,7 @@ const ProblemPage: React.FC<{ problemId: string }> = ({ problemId }) => {
   }
 
   return (
-    <div className="h-screen bg-black text-white py-5 overflow-hidden">
+    <div className="h-screen bg-black text-white py-5 overflow-y-auto">
       <Navbar />
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel defaultSize={50} className="p-4 text-white">

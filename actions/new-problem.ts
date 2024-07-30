@@ -9,7 +9,6 @@ export const addProblem = async (
   userId: string,
   userRole: UserRole
 ) => {
-  console.log("Received data:", data);
   const validatedFields = ProblemSchema.safeParse({ ...data, userId });
 
   if (!validatedFields.success) {

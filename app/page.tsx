@@ -5,6 +5,7 @@ import Navbar from "@/components/pages/navbar/navbar";
 import Image from "next/image";
 import bg from "../public/bg.jpg";
 import Link from "next/link";
+import Head from "next/head";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -13,13 +14,11 @@ const font = Poppins({
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen flex flex-col p-4 pt-4">
+      <main className="relative min-h-screen flex flex-col p-4 pt-4">
       <Image
         src={bg}
         alt="Background"
-        layout="fill"
-        objectFit="cover"
-        className="fixed inset-0 -z-10"
+        className="fixed inset-0 -z-10 object-cover w-full h-full"
         style={{ backgroundRepeat: "repeat" }}
       />
       <Navbar />
@@ -30,7 +29,7 @@ export default function Home() {
             font.className
           )}
         >
-          Welcome to the Online Judge
+          Welcome to the AlgoArena
         </h1>
         <p className="text-white text-lg">
           Test your coding skills against challenging problems.
@@ -40,7 +39,7 @@ export default function Home() {
             <Link href="/problems">Get Started</Link>
           </Button>
         </div>
-      </div>
-    </main>
+          </div>
+        </main>
   );
 }

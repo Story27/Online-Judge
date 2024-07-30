@@ -83,7 +83,7 @@ model Contest {
   startTime DateTime
   endTime   DateTime
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   problems  Problem[]
 }
 
@@ -95,7 +95,7 @@ model Problem {
   topics      String
   testCases   TestCase[]
   userId      String
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   contests    Contest[]
   acceptances String[] @default([])
 }
@@ -105,7 +105,7 @@ model TestCase {
   input            String
   output           String
   problemId        String
-  problem          Problem @relation(fields: [problemId], references: [id])
+  problem          Problem @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   isSampleTestCase Boolean @default(false)
 }
 

@@ -4,20 +4,22 @@ import { LoginButton } from "@/components/auth/login/login-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UseCurrentUser } from "@/hooks/use-current-user";
+import Image from "next/image";
 import { FaUser } from "react-icons/fa";
+import logo from "@/public/logo.svg"
 
 const Navbar = () => {
   const user = UseCurrentUser();
 
   return (
-    <nav className="flex justify-between items-center px-8 shadow-md bg-black">
+    <nav className="flex justify-between items-center px-8 shadow-md h-36">
       <div className="text-white text-2xl font-bold">
         <a href="/" className="text-white pr-8 ">
-          Online Judge
+          <Image src={logo} alt="Logo" className="h-32 w-48" />
         </a>
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center pb-12">
         <a href="/problems" className="text-white pr-8 ">
           Problems
         </a>

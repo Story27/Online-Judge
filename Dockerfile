@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat g++ python3 openjdk11
 WORKDIR /app
 
 # Install dependencies
-COPY package.json package-lock.json* ./
+COPY package*.json package-lock.json* ./
 RUN npm ci
 
 # Rebuild the source code only when needed
@@ -70,9 +70,4 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]

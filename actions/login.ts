@@ -16,8 +16,7 @@ import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 export const login = async (
-  values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null
+  values: z.infer<typeof LoginSchema>
 ) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
@@ -86,16 +85,20 @@ export const login = async (
         },
       });
     } else {
-      const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-      await sendTwoFactorTokenEmail(existingUser.email, twoFactorToken.token);
-      return { twoFactor: true };
+      try {
+        const twoFactorToken = await generateTwoFactorToken(existingUser.email);
+        await sendTwoFactorTokenEmail(existingUser.email, twoFactorToken.token);
+        return { twoFactor: true };
+      } catch (error) {
+        return { error: "Failed to send 2FA token" };
+      }
     }
   }
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl ? callbackUrl : DEFAULT_LOGIN_REDIRECT,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {

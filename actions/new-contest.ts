@@ -10,7 +10,6 @@ export async function addContest(
   userId: string,
   userRole: UserRole
 ) {
-  console.log("Received data:", data);
   const validatedFields = ContestSchema.safeParse(data);
 
   if (!validatedFields.success) {

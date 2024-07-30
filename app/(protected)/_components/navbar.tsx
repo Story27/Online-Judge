@@ -17,15 +17,9 @@ export const Navbar = () => {
         </Button>
         <Button
           asChild
-          variant={pathname === "/server" ? "default" : "outline"}
-        >
-          <Link href="/server">Server</Link>
-        </Button>
-        <Button
-          asChild
           variant={pathname === "/client" ? "default" : "outline"}
         >
-          <Link href="/client">Client</Link>
+          <Link href="/client">User</Link>
         </Button>
         <RoleGate allowedRole={UserRole.ADMIN}>
           <Button

@@ -39,7 +39,6 @@ export const {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
           existingUser.id
         );
-        console.log({ twoFactorConfirmation });
 
         if (!twoFactorConfirmation) return false;
 
